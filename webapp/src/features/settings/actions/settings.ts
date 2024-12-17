@@ -2,10 +2,10 @@
 
 import { getUserByEmail, getUserById } from "@/features/auth/data";
 import {
-  currentUser,
   generateVerificationToken,
   sendVerificationEmail,
 } from "@/features/auth/lib";
+import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
