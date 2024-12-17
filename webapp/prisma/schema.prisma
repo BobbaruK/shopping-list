@@ -31,8 +31,8 @@ model User {
   updatedAt             DateTime               @updatedAt
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
-  ShoppingList          ShoppingList[]         @relation("userShoppingListCreated")
-  ListItem              ListItem[]             @relation("userListItemCreated")
+  shoppingList          ShoppingList[]         @relation("userShoppingListCreated")
+  listItems             ListItem[]             @relation("userListItemCreated")
 }
 
 model Account {
@@ -100,7 +100,7 @@ model ShoppingList {
   notes         String
   createdBy     User?      @relation("userShoppingListCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
   createdUserId String?
-  ListItem      ListItem[] @relation("includedInShoppingList")
+  listItems     ListItem[] @relation("includedInShoppingList")
 }
 
 model ListItem {

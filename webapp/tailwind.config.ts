@@ -75,6 +75,9 @@ const config = {
       gridTemplateRows: {
         siteGrid: "auto 1fr auto",
       },
+      fontSize: {
+        heading1: "clamp(1.25rem, 0.9537rem + 1.4815vw, 2.25rem)", // 20 - 36; 230 - 1400
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
