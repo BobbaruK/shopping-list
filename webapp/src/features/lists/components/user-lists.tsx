@@ -1,7 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { currentUser } from "@/features/auth/lib/auth";
 import { getUserLists } from "../data";
+import { ListItemActions } from "./list-item-actions";
 
 export const UserLists = async () => {
   const user = await currentUser();
@@ -26,8 +26,7 @@ export const UserLists = async () => {
               </p>
             </div>
             <div className="flex gap-4 lg:ms-auto">
-              <Button variant={"destructive"}>Delete</Button>
-              <Button variant={"default"}>Edit</Button>
+              <ListItemActions shoppingList={list} />
             </div>
           </Card>
         ))}

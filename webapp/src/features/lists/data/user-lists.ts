@@ -18,6 +18,9 @@ export const getUserLists = async (createdUserId: string) => {
         _count: true,
         listItems: true,
       },
+      orderBy: {
+        createdAt: 'desc'
+      }
     });
 
     return userList;
