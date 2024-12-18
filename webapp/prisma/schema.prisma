@@ -33,6 +33,8 @@ model User {
   twoFactorConfirmation TwoFactorConfirmation?
   shoppingList          ShoppingList[]         @relation("userShoppingListCreated")
   listItems             ListItem[]             @relation("userListItemCreated")
+
+  @@index([id, email])
 }
 
 model Account {
@@ -97,7 +99,7 @@ model ShoppingList {
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
   name          String
-  notes         String
+  notes         String?
   createdBy     User?      @relation("userShoppingListCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
   createdUserId String?
   listItems     ListItem[] @relation("includedInShoppingList")
@@ -108,7 +110,7 @@ model ListItem {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   name           String
-  notes          String
+  notes          String?
   createdBy      User?        @relation("userListItemCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
   createdUserId  String?
   shoppingList   ShoppingList @relation("includedInShoppingList", fields: [shoppingListId], references: [id], onDelete: Cascade)

@@ -19,7 +19,7 @@ const ListsPage = async () => {
             className="flex gap-2"
             asChild
           >
-            <Link href={"#"}>
+            <Link href={"/lists/add"}>
               <IoAddCircleOutline size={18} />
               Add List
             </Link>
