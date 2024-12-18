@@ -1,5 +1,7 @@
 "use client";
 
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,8 +20,6 @@ import z from "zod";
 import { login } from "../actions";
 import { LoginSchema } from "../schemas";
 import { CardWrapper } from "./card-wrapper";
-import { FormError } from "./form-error";
-import { FormSuccess } from "./form-success";
 
 interface Props {
   searchParamError?: string;

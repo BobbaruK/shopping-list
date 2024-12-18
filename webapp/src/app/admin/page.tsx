@@ -1,10 +1,11 @@
 "use client";
 
+import { FormSuccess } from "@/components/form-success";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { admin } from "@/features/auth/actions";
-import { FormSuccess, RoleGate } from "@/features/auth/components";
+import { RoleGate } from "@/features/auth/components";
 import { UserRole } from "@prisma/client";
 
 const AdminPage = () => {

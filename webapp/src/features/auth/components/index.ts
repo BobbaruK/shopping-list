@@ -2,8 +2,6 @@ export { BackButton } from "./back-button";
 export { CardWrapper } from "./card-wrapper";
 export { EmailTemplate } from "./email-template";
 export { ErrorCard } from "./error-card";
-export { FormError } from "./form-error";
-export { FormSuccess } from "./form-success";
 export { Header } from "./header";
 export { LoginButton } from "./login-button";
 export { LoginForm } from "./login-form";

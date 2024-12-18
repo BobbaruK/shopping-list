@@ -18,8 +18,8 @@ import z from "zod";
 import { register } from "../actions";
 import { RegisterSchema } from "../schemas";
 import { CardWrapper } from "./card-wrapper";
-import { FormError } from "./form-error";
-import { FormSuccess } from "./form-success";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
 
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();

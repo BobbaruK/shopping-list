@@ -1,11 +1,11 @@
 "use client";
 
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
 import { useCallback, useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
-import { CardWrapper } from "./card-wrapper";
-import { FormError } from "./form-error";
-import { FormSuccess } from "./form-success";
 import { newVerification } from "../actions/new-verification";
+import { CardWrapper } from "./card-wrapper";
 
 interface Props {
   searchParamToken: string;

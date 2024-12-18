@@ -1,6 +1,8 @@
 "use client";
 
 import { revalidate } from "@/actions/reavalidate";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
@@ -23,7 +25,6 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { userRoles } from "@/constants";
 import { logout } from "@/features/auth/actions";
-import { FormError, FormSuccess } from "@/features/auth/components";
 import { useCurrentUser } from "@/features/auth/hooks";
 import { settings } from "@/features/settings/actions";
 import { SettingsSchema } from "@/features/settings/schemas";

@@ -17,8 +17,8 @@ import z from "zod";
 import { newPassword } from "../actions";
 import { NewPasswordSchema } from "../schemas";
 import { CardWrapper } from "./card-wrapper";
-import { FormError } from "./form-error";
-import { FormSuccess } from "./form-success";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
 
 interface Props {
   searchParamToken: string;

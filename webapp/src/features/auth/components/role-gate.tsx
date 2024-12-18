@@ -1,7 +1,6 @@
-
+import { FormError } from "@/components/form-error";
 import { UserRole } from "@prisma/client";
 import { ReactNode } from "react";
-import { FormError } from "./form-error";
 import { useCurrentRole } from "../hooks";
 
 interface Props {

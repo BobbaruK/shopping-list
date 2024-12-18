@@ -1,5 +1,7 @@
 "use client";
 
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,8 +19,6 @@ import z from "zod";
 import { reset } from "../actions";
 import { ResetSchema } from "../schemas";
 import { CardWrapper } from "./card-wrapper";
-import { FormError } from "./form-error";
-import { FormSuccess } from "./form-success";
 
 export const ResetForm = () => {
   const [isPending, startTransition] = useTransition();
