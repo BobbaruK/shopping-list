@@ -6,7 +6,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { IoAddCircleOutline } from "react-icons/io5";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdOutlineCancel } from "react-icons/md";
 import { useMediaQuery } from "usehooks-ts";
 import { Button, buttonVariants } from "./ui/button";
 
@@ -15,7 +15,7 @@ interface Props
     VariantProps<typeof buttonVariants> {
   buttonLabel: string;
   linkHref?: string;
-  icon?: "delete" | "add" | "back";
+  icon?: "delete" | "add" | "back" | "cancel";
   hideLabelOnMobile?: boolean;
 }
 
@@ -43,6 +43,9 @@ const CustomButton = React.forwardRef<HTMLButtonElement, Props>(
 
         case "back":
           return <IoMdArrowRoundBack size={18} />;
+
+        case "cancel":
+          return <MdOutlineCancel size={18} />;
 
         default:
           break;

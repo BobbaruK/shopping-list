@@ -2,7 +2,6 @@
 
 import { revalidate } from "@/actions/reavalidate";
 import { CustomButton } from "@/components/custom-button";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -23,6 +22,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { cn } from "@/lib/utils";
 import { ShoppingList } from "@prisma/client";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -88,7 +88,7 @@ export const ListItemActions = ({ shoppingList }: Props) => {
             <DialogTitle>{labels.title}</DialogTitle>
             <DialogDescription dangerouslySetInnerHTML={labels.description} />
           </DialogHeader>
-          <DialogFooter className="gap-4">
+          <DialogFooter className={cn("gap-2 sm:space-x-0")}>
             <CustomButton
               buttonLabel={"Delete"}
               variant={"destructive"}
@@ -97,7 +97,12 @@ export const ListItemActions = ({ shoppingList }: Props) => {
               hideLabelOnMobile={false}
             />
             <DialogClose asChild>
-              <Button variant={"outline"}>Cancel</Button>
+              <CustomButton
+                buttonLabel={"Cancel"}
+                variant={"outline"}
+                icon={"cancel"}
+                hideLabelOnMobile={false}
+              />
             </DialogClose>
           </DialogFooter>
         </DialogContent>
@@ -119,7 +124,7 @@ export const ListItemActions = ({ shoppingList }: Props) => {
           <DrawerTitle>{labels.title}</DrawerTitle>
           <DrawerDescription dangerouslySetInnerHTML={labels.description} />
         </DrawerHeader>
-        <DrawerFooter className="pt-2">
+        <DrawerFooter>
           <CustomButton
             buttonLabel={"Delete"}
             variant={"destructive"}
@@ -128,7 +133,12 @@ export const ListItemActions = ({ shoppingList }: Props) => {
             hideLabelOnMobile={false}
           />
           <DrawerClose asChild>
-            <Button variant={"outline"}>Cancel</Button>
+            <CustomButton
+              buttonLabel={"Cancel"}
+              variant={"outline"}
+              icon={"cancel"}
+              hideLabelOnMobile={false}
+            />
           </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
