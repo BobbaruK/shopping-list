@@ -1,5 +1,7 @@
 "use client";
 
+import { revalidate } from "@/actions/reavalidate";
+import { CustomButton } from "@/components/custom-button";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,11 +13,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { ShoppingList } from "@prisma/client";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useMediaQuery } from "usehooks-ts";
 import { deleteList as delList } from "../actions/delete";
-import { revalidate } from "@/actions/reavalidate";
 
 interface Props {
   shoppingList: ShoppingList;
@@ -23,6 +35,7 @@ interface Props {
 
 export const ListItemActions = ({ shoppingList }: Props) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const deleteList = () => {
     setModalOpen(false);
@@ -43,32 +56,82 @@ export const ListItemActions = ({ shoppingList }: Props) => {
       revalidate();
     });
   };
-  return (
-    <>
+
+  const labels = {
+    title: "Are you absolutely sure?",
+    description: {
+      __html: `This action cannot be undone. This will permanently delete &quot;<strong>${shoppingList.name}</strong>&quot; from our servers.`,
+    },
+  };
+
+  // useEffect(() => {
+  //   const mainContent = document.getElementById("site-wrapper");
+  //   if (mainContent) mainContent.inert = modalOpen;
+
+  //   return () => {
+  //     if (mainContent) mainContent.inert = false;
+  //   };
+  // }, [modalOpen]);
+
+  if (isDesktop)
+    return (
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogTrigger asChild>
-          <Button variant={"destructive"}>Delete</Button>
+          <CustomButton
+            buttonLabel={"Delete"}
+            variant={"destructive"}
+            icon="delete"
+          />
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. This will permanently delete &quot;
-              <strong>{shoppingList.name}</strong>&quot; from our servers.
-            </DialogDescription>
+            <DialogTitle>{labels.title}</DialogTitle>
+            <DialogDescription dangerouslySetInnerHTML={labels.description} />
           </DialogHeader>
-          <DialogFooter>
-            <Button variant={"destructive"} onClick={deleteList}>
-              Delete
-            </Button>
+          <DialogFooter className="gap-4">
+            <CustomButton
+              buttonLabel={"Delete"}
+              variant={"destructive"}
+              onClick={deleteList}
+              icon={"delete"}
+              hideLabelOnMobile={false}
+            />
             <DialogClose asChild>
               <Button variant={"outline"}>Cancel</Button>
             </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+    );
 
-      <Button variant={"default"}>Edit</Button>
-    </>
+  // TODO: drawer focus issue - check console when opening drawer
+  return (
+    <Drawer open={modalOpen} onOpenChange={setModalOpen}>
+      <DrawerTrigger asChild>
+        <CustomButton
+          buttonLabel={"Delete"}
+          variant={"destructive"}
+          icon="delete"
+        />
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader className="text-left">
+          <DrawerTitle>{labels.title}</DrawerTitle>
+          <DrawerDescription dangerouslySetInnerHTML={labels.description} />
+        </DrawerHeader>
+        <DrawerFooter className="pt-2">
+          <CustomButton
+            buttonLabel={"Delete"}
+            variant={"destructive"}
+            onClick={deleteList}
+            icon={"delete"}
+            hideLabelOnMobile={false}
+          />
+          <DrawerClose asChild>
+            <Button variant={"outline"}>Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   );
 };

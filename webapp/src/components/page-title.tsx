@@ -1,7 +1,4 @@
-import Link from "next/link";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import { IoAddCircleOutline } from "react-icons/io5";
-import { Button } from "./ui/button";
+import { CustomButton } from "./custom-button";
 
 interface Props {
   label: string;
@@ -15,24 +12,20 @@ export const PageTitle = ({ label, addBtnHref, backBtnHref }: Props) => {
       <h1 className="text-heading1">{label}</h1>
 
       {addBtnHref && (
-        <Button variant={"outline"} size={"sm"} className="flex gap-2" asChild>
-          <Link href={addBtnHref}>
-            <IoAddCircleOutline size={18} />
-            Add
-          </Link>
-        </Button>
+        <CustomButton
+          buttonLabel="Add"
+          variant={"outline"}
+          icon="add"
+          linkHref={addBtnHref}
+        />
       )}
       {backBtnHref && (
-        <Button
-          asChild
-          className="flex items-center justify-center gap-2"
+        <CustomButton
+          buttonLabel="Back"
           variant={"outline"}
-        >
-          <Link href={backBtnHref}>
-            <IoMdArrowRoundBack size={18} />
-            <span className="hidden md:inline">Back</span>
-          </Link>
-        </Button>
+          icon="back"
+          linkHref={backBtnHref}
+        />
       )}
     </div>
   );
