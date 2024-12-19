@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { currentUser } from "@/features/auth/lib/auth";
 import { getUserLists } from "../data";
 import { ListItemActions } from "./list-item-actions";
+import Link from "next/link";
 
 export const UserLists = async () => {
   const user = await currentUser();
@@ -19,7 +20,7 @@ export const UserLists = async () => {
           >
             <div className="flex flex-col space-y-1.5">
               <h3 className="text-2xl font-semibold leading-none tracking-tight">
-                {list.name}
+                <Link href={`/lists/${list.id}`}>{list.name}</Link>
               </h3>
               <p className={"text-sm text-muted-foreground"}>
                 List items: {list._count.listItems}

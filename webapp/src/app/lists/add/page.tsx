@@ -4,7 +4,7 @@ import { AddListForm } from "@/features/lists/components";
 const AddListPage = () => {
   return (
     <div className="container space-y-6">
-      <PageTitle label="Add shopping list" />
+      <PageTitle label="Add shopping list" backBtnHref="/lists" />
       <AddListForm />
     </div>
   );

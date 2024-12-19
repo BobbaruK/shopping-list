@@ -41,7 +41,7 @@ export const AddListForm = () => {
         if (data?.success) {
           setSuccess(data.success);
           revalidate();
-          router.push("/lists");
+          router.push(`/lists/${data.listId}`);
         }
 
         if (data?.error) {

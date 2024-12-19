@@ -21,7 +21,7 @@ export const addList = async (values: z.infer<typeof addListSchema>) => {
 
   if (!dbUser) return { error: "Unauthorized!" };
 
-  await db.shoppingList.create({
+  const newList = await db.shoppingList.create({
     data: {
       name: shoppingListName,
       notes: notes || null,
@@ -31,5 +31,6 @@ export const addList = async (values: z.infer<typeof addListSchema>) => {
 
   return {
     success: "Shopping list successfully created!",
+    listId: newList.id,
   };
 };
