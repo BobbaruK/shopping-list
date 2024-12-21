@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import Header from "@/components/header";
 import { auth } from "@/auth";
+import { Footer } from "@/components/footer";
+import Header from "@/components/header";
+import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,9 +36,7 @@ export default async function RootLayout({
             <div className="grid min-h-[100vh] grid-rows-siteGrid gap-10">
               <Header />
               <main>{children}</main>
-              <footer>
-                <div className="container">footer</div>
-              </footer>
+              <Footer />
             </div>
             <Toaster richColors closeButton />
           </ThemeProvider>
