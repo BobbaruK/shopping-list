@@ -38,3 +38,29 @@ export const passwordRefine = (password: string, ctx: z.RefinementCtx) => {
     });
   }
 };
+
+export function formatDate(
+  date: string | number | Date,
+  options: Intl.DateTimeFormatOptions = {},
+): string {
+  const defaultOptions: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: undefined,
+    hour: undefined,
+    minute: undefined,
+    second: undefined,
+    timeZoneName: undefined,
+  };
+
+  const formatOptions = { ...defaultOptions, ...options };
+
+  // Ensure the input is a valid date
+  const parsedDate = new Date(date);
+  if (isNaN(parsedDate.getTime())) {
+    throw new Error("Invalid date");
+  }
+
+  return new Intl.DateTimeFormat("en-US", formatOptions).format(parsedDate);
+}
