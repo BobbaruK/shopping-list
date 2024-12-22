@@ -1,4 +1,4 @@
 "use server";
 
-export { addList } from "./add";
-export { deleteList } from "./delete";
+export { addList } from "./addList";
+export { deleteList } from "./deleteList";

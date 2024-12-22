@@ -18,7 +18,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { addListSchema } from "../../schemas";
-import { addList } from "../../actions/add";
+import { addList } from "../../actions/addList";
 import { revalidate } from "@/actions/reavalidate";
 import { useRouter } from "next/navigation";
 

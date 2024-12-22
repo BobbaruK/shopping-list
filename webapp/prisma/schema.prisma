@@ -100,6 +100,7 @@ model ShoppingList {
   updatedAt     DateTime   @updatedAt
   name          String
   notes         String?
+  active        Boolean    @default(true)
   createdBy     User?      @relation("userShoppingListCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
   createdUserId String?
   listItems     ListItem[] @relation("includedInShoppingList")

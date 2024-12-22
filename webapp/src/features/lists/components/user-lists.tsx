@@ -25,6 +25,7 @@ export const UserLists = async () => {
               <p className={"text-sm text-muted-foreground"}>
                 List items: {list._count.listItems}
               </p>
+              {/* <p>{list.active ? "tru" : "false"}</p> */}
             </div>
             <div className="flex gap-4 lg:ms-auto">
               <ListItemActions shoppingList={list} />
