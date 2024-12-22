@@ -27,7 +27,7 @@ import { ShoppingList } from "@prisma/client";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useMediaQuery } from "usehooks-ts";
-import { deleteList as delList } from "../actions/deleteList";
+import { deleteList as delList } from "../actions/delete-list";
 
 interface Props {
   shoppingList: ShoppingList;
