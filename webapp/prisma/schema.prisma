@@ -111,9 +111,15 @@ model ListItem {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   name           String
+  pieces         Int
+  price          Int
+  priceTotal     Int
   notes          String?
+  active         Boolean      @default(true)
   createdBy      User?        @relation("userListItemCreated", fields: [createdUserId], references: [id], onDelete: SetNull)
   createdUserId  String?
   shoppingList   ShoppingList @relation("includedInShoppingList", fields: [shoppingListId], references: [id], onDelete: Cascade)
   shoppingListId String
+
+  @@index([id, shoppingListId])
 }

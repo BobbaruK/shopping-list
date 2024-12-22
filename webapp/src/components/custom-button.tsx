@@ -72,11 +72,11 @@ const CustomButton = React.forwardRef<HTMLButtonElement, Props>(
           {componentLoaded ? (
             <Button
               ref={ref}
-              className="gap-2"
               size={
                 !matches && icon && hideLabelOnMobile ? "icon" : restProps.size
               }
               {...restProps}
+              className={cn("gap-2", restProps.className)}
               asChild
             >
               <Link href={linkHref}>
@@ -97,11 +97,11 @@ const CustomButton = React.forwardRef<HTMLButtonElement, Props>(
         {componentLoaded ? (
           <Button
             ref={ref}
-            className="gap-2"
             size={
               !matches && icon && hideLabelOnMobile ? "icon" : restProps.size
             }
             {...restProps}
+            className={cn("gap-2", restProps.className)}
           >
             {leIcon}
             {restProps.size !== "icon" && (

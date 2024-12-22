@@ -32,12 +32,14 @@ const ListPage = async ({ params: { listId } }: Props) => {
         backBtnHref="/lists"
         editBtnHref={`/lists/${list.id}/edit`}
       />
-
+      {/* <div>
+        <pre>{JSON.stringify(list, null, 2)}</pre>
+      </div> */}
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
           <AccordionTrigger>Details</AccordionTrigger>
-          <AccordionContent>
-            <Card className="flex flex-wrap items-start justify-between gap-6 p-4">
+          <AccordionContent className="pb-6">
+            <Card className="flex flex-wrap items-start justify-between gap-6 p-4 py-6">
               <div>
                 <div>Status:</div>
                 {list.active ? (
@@ -83,7 +85,7 @@ const ListPage = async ({ params: { listId } }: Props) => {
         </AccordionItem>
       </Accordion>
 
-      <AddListItems />
+      <AddListItems list={list} />
     </div>
   );
 };

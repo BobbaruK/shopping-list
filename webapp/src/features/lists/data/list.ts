@@ -6,6 +6,9 @@ export const getList = async (id: string) => {
       where: {
         id,
       },
+      include: {
+        listItems: true,
+      },
     });
 
     return list;

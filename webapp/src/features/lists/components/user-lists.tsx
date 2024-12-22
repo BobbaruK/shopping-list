@@ -10,7 +10,8 @@ export const UserLists = async () => {
 
   return (
     <div>
-      {/* <pre>{JSON.stringify(userLists, null, 2)}</pre> */}
+      {/* <pre>{JSON.stringify(user, null, 2)}</pre>
+      <pre>{JSON.stringify(userLists, null, 2)}</pre> */}
 
       <div className="flex flex-col gap-4">
         {userLists?.map((list) => (
