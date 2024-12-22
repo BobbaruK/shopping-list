@@ -16,16 +16,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { listDetailsSchema } from "../../schemas";
-import { DrilledProps } from "../list-details";
 import { editListDetails } from "../../actions/edit-list-details";
 import { toast } from "sonner";
 import { revalidate } from "@/actions/reavalidate";
+import { useRouter } from "next/navigation";
+import { ShoppingList } from "@prisma/client";
 
-type Props = {
-  onSuccess: () => void;
-} & DrilledProps;
+interface Props {
+  list: ShoppingList;
+}
 
-export const ListDetailsForm = ({ list, onSuccess }: Props) => {
+export const ListDetailsForm = ({ list }: Props) => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof listDetailsSchema>>({
     resolver: zodResolver(listDetailsSchema),
     defaultValues: {
@@ -41,7 +43,7 @@ export const ListDetailsForm = ({ list, onSuccess }: Props) => {
         toast.success(data.success);
 
         revalidate();
-        onSuccess();
+        router.push(`/lists/${list.id}`);
       }
 
       if (data.error) {
