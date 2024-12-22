@@ -84,12 +84,20 @@ const config = {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
         },
       },
       animation: {
@@ -100,7 +108,7 @@ const config = {
         siteGrid: "auto 1fr auto",
       },
       fontSize: {
-        heading1: "clamp(1.25rem, 0.9537rem + 1.4815vw, 2.25rem)", // 20 - 36; 230 - 1400
+        heading1: "clamp(1.25rem, 0.9537rem + 1.4815vw, 2.25rem)",
       },
     },
   },
