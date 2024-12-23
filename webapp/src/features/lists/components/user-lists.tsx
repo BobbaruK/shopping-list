@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { currentUser } from "@/features/auth/lib/auth";
 import { getUserLists } from "../data";
-import { ListItemActions } from "./list-item-actions";
+import { ListActions } from "./list-actions";
 import Link from "next/link";
 
 export const UserLists = async () => {
@@ -29,7 +29,7 @@ export const UserLists = async () => {
               {/* <p>{list.active ? "tru" : "false"}</p> */}
             </div>
             <div className="flex gap-4 lg:ms-auto">
-              <ListItemActions shoppingList={list} />
+              <ListActions shoppingList={list} />
             </div>
           </Card>
         ))}

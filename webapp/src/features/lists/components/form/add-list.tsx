@@ -2,8 +2,6 @@
 
 import { revalidate } from "@/actions/reavalidate";
 import { CustomButton } from "@/components/custom-button";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
 import {
   Form,
   FormControl,
@@ -16,12 +14,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 import { addList } from "../../actions/add-list";
 import { addListSchema } from "../../schemas";
-import { toast } from "sonner";
 
 export const AddListForm = () => {
   const [isPending, startTransition] = useTransition();

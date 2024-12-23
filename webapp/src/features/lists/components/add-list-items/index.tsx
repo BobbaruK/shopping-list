@@ -4,9 +4,9 @@ import { CustomButton } from "@/components/custom-button";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Prisma } from "@prisma/client";
 import { useState } from "react";
-import { MdDelete, MdModeEdit } from "react-icons/md";
-import { AddListItemForm } from "../form/add-list-item";
 import { IoAddCircleOutline } from "react-icons/io5";
+import { AddListItemForm } from "../form/add-list-item";
+import { ListItemActions } from "../list-item-actions";
 
 interface Props {
   list: Prisma.ShoppingListGetPayload<{
@@ -31,7 +31,8 @@ export const AddListItems = ({ list }: Props) => {
                   <CardTitle>{listItem.name}</CardTitle>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    <CustomButton
+                    <ListItemActions listItem={listItem} />
+                    {/* <CustomButton
                       buttonLabel="Delete"
                       icon={MdDelete}
                       iconPlacement="left"
@@ -42,7 +43,7 @@ export const AddListItems = ({ list }: Props) => {
                       icon={MdModeEdit}
                       iconPlacement="left"
                       variant={"warning"}
-                    />
+                    /> */}
                   </div>
                 </div>
                 {listItem.notes && (

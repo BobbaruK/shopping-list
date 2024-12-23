@@ -1,5 +1,6 @@
 "use client";
 
+import { revalidate } from "@/actions/reavalidate";
 import { CustomButton } from "@/components/custom-button";
 import {
   Dialog,
@@ -22,25 +23,25 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
-import { ListItem } from "@prisma/client";
+import { ShoppingList } from "@prisma/client";
 import { useState } from "react";
-import { MdDelete, MdOutlineCancel } from "react-icons/md";
 import { toast } from "sonner";
 import { useMediaQuery } from "usehooks-ts";
-import { deleteListItem } from "../actions/delete-list-item";
+import { deleteList as delList } from "../actions/delete-list";
+import { MdDelete, MdOutlineCancel } from "react-icons/md";
 
 interface Props {
-  listItem: ListItem;
+  shoppingList: ShoppingList;
 }
 
-export const ListItemActions = ({ listItem }: Props) => {
+export const ListActions = ({ shoppingList }: Props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  const deleteItem = () => {
+  const deleteList = () => {
     setModalOpen(false);
 
-    deleteListItem(listItem.id).then((data) => {
+    delList(shoppingList.id).then((data) => {
       if (data.success) {
         const markup = { __html: data.success };
         toast.warning(<div dangerouslySetInnerHTML={markup} />);
@@ -52,15 +53,26 @@ export const ListItemActions = ({ listItem }: Props) => {
         toast.error(<div dangerouslySetInnerHTML={markup} />);
         setModalOpen(false);
       }
+
+      revalidate();
     });
   };
 
   const labels = {
     title: "Are you absolutely sure?",
     description: {
-      __html: `This action cannot be undone. This will permanently delete &quot;<strong>${listItem.name}</strong>&quot; your list and from our servers.`,
+      __html: `This action cannot be undone. This will permanently delete &quot;<strong>${shoppingList.name}</strong>&quot; and all it's items from our servers.`,
     },
   };
+
+  // useEffect(() => {
+  //   const mainContent = document.getElementById("site-wrapper");
+  //   if (mainContent) mainContent.inert = modalOpen;
+
+  //   return () => {
+  //     if (mainContent) mainContent.inert = false;
+  //   };
+  // }, [modalOpen]);
 
   if (isDesktop)
     return (
@@ -82,7 +94,7 @@ export const ListItemActions = ({ listItem }: Props) => {
             <CustomButton
               buttonLabel={"Delete"}
               variant={"destructive"}
-              onClick={deleteItem}
+              onClick={deleteList}
               icon={MdDelete}
               iconPlacement="left"
               hideLabelOnMobile={false}
@@ -121,7 +133,7 @@ export const ListItemActions = ({ listItem }: Props) => {
           <CustomButton
             buttonLabel={"Delete"}
             variant={"destructive"}
-            onClick={deleteItem}
+            onClick={deleteList}
             icon={MdDelete}
             iconPlacement="left"
             hideLabelOnMobile={false}
