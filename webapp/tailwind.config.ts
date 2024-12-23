@@ -68,14 +68,6 @@ const config = {
           DEFAULT: "hsl(var(--info-background))",
           foreground: "hsl(var(--info-foreground))",
         },
-        highlight: {
-          DEFAULT: "hsl(var(--highlight-background))",
-          foreground: "hsl(var(--highlight-foreground))",
-        },
-        "highlight-2": {
-          DEFAULT: "hsl(var(--highlight-2-background))",
-          foreground: "hsl(var(--highlight-2-foreground))",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",

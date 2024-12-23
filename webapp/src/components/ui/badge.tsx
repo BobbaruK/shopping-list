@@ -18,6 +18,9 @@ const badgeVariants = cva(
         success:
           "border-success bg-success/10 text-success hover:bg-success/30",
         danger: "border-danger bg-danger/10 text-danger hover:bg-danger/30",
+        warning:
+          "border-warning bg-warning/10 text-warning hover:bg-warning/30",
+        info: "border-info bg-info/10 text-info hover:bg-info/30",
       },
     },
     defaultVariants: {
