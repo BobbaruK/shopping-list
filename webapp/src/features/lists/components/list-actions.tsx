@@ -1,6 +1,5 @@
 "use client";
 
-import { revalidate } from "@/actions/reavalidate";
 import { CustomButton } from "@/components/custom-button";
 import {
   Dialog,
@@ -25,10 +24,10 @@ import {
 import { cn } from "@/lib/utils";
 import { ShoppingList } from "@prisma/client";
 import { useState } from "react";
+import { MdDelete, MdOutlineCancel } from "react-icons/md";
 import { toast } from "sonner";
 import { useMediaQuery } from "usehooks-ts";
 import { deleteList as delList } from "../actions/delete-list";
-import { MdDelete, MdOutlineCancel } from "react-icons/md";
 
 interface Props {
   shoppingList: ShoppingList;
@@ -53,8 +52,6 @@ export const ListActions = ({ shoppingList }: Props) => {
         toast.error(<div dangerouslySetInnerHTML={markup} />);
         setModalOpen(false);
       }
-
-      revalidate();
     });
   };
 

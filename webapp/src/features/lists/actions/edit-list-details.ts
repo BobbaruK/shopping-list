@@ -1,10 +1,11 @@
 "use server";
 
+import { getUserById } from "@/features/auth/data";
+import { currentUser } from "@/features/auth/lib/auth";
+import db from "@/lib/db";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { listDetailsSchema } from "../schemas";
-import { currentUser } from "@/features/auth/lib/auth";
-import { getUserById } from "@/features/auth/data";
-import db from "@/lib/db";
 
 export const editListDetails = async (
   id: string,
@@ -24,17 +25,27 @@ export const editListDetails = async (
 
   if (!dbUser) return { error: "Unauthorized!" };
 
-  await db.shoppingList.update({
-    where: {
-      id,
-    },
-    data: {
-      name,
-      notes: notes || null,
-      active,
-      updatedAt: new Date(),
-    },
-  });
+  try {
+    await db.shoppingList.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        notes: notes || null,
+        active,
+        updatedAt: new Date(),
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return { error: error.message };
+    }
+
+    throw error;
+  }
+
+  revalidatePath("/");
 
   return {
     success: `Shopping list successfully edited!`,

@@ -1,6 +1,5 @@
 "use client";
 
-import { revalidate } from "@/actions/reavalidate";
 import { CustomButton } from "@/components/custom-button";
 import {
   Form,
@@ -37,13 +36,11 @@ export const AddListForm = () => {
       addList(values).then((data) => {
         if (data?.success) {
           toast.success(data.success);
-          revalidate();
           router.push(`/lists/${data.listId}`);
         }
 
         if (data?.error) {
           toast.error(data.error);
-          revalidate();
         }
       });
     });

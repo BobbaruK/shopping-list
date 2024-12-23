@@ -3,6 +3,7 @@
 import { getUserById } from "@/features/auth/data";
 import { currentUser } from "@/features/auth/lib/auth";
 import db from "@/lib/db";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { addListSchema } from "../schemas";
 
@@ -21,16 +22,30 @@ export const addList = async (values: z.infer<typeof addListSchema>) => {
 
   if (!dbUser) return { error: "Unauthorized!" };
 
-  const newList = await db.shoppingList.create({
-    data: {
-      name: shoppingListName,
-      notes: notes || null,
-      createdUserId: dbUser.id,
-    },
-  });
+  let newListId;
+
+  try {
+    const newList = await db.shoppingList.create({
+      data: {
+        name: shoppingListName,
+        notes: notes || null,
+        createdUserId: dbUser.id,
+      },
+    });
+
+    newListId = newList.id;
+  } catch (error) {
+    if (error instanceof Error) {
+      return { error: error.message };
+    }
+
+    throw error;
+  }
+
+  revalidatePath("/");
 
   return {
     success: "Shopping list successfully created!",
-    listId: newList.id,
+    listId: newListId,
   };
 };

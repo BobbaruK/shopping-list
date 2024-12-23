@@ -1,6 +1,5 @@
 "use client";
 
-import { revalidate } from "@/actions/reavalidate";
 import { CustomButton } from "@/components/custom-button";
 import {
   Form,
@@ -44,8 +43,6 @@ export const ListDetailsForm = ({ list }: Props) => {
       editListDetails(list.id, values).then((data) => {
         if (data.success) {
           toast.success(data.success);
-
-          revalidate();
           router.push(`/lists/${list.id}`);
         }
 
