@@ -1,4 +1,9 @@
+"use client";
+
+import { IoAddCircleOutline } from "react-icons/io5";
 import { CustomButton } from "./custom-button";
+import { MdModeEdit } from "react-icons/md";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 interface Props {
   label: string;
@@ -22,7 +27,8 @@ export const PageTitle = ({
           <CustomButton
             buttonLabel="Add"
             variant={"outline"}
-            icon="add"
+            icon={IoAddCircleOutline}
+            iconPlacement="left"
             linkHref={addBtnHref}
           />
         )}
@@ -30,7 +36,8 @@ export const PageTitle = ({
           <CustomButton
             buttonLabel="Edit"
             variant={"outline"}
-            icon="edit"
+            icon={MdModeEdit}
+            iconPlacement="left"
             linkHref={editBtnHref}
           />
         )}
@@ -38,7 +45,8 @@ export const PageTitle = ({
           <CustomButton
             buttonLabel="Back"
             variant={"outline"}
-            icon="back"
+            icon={IoMdArrowRoundBack}
+            iconPlacement="left"
             linkHref={backBtnHref}
           />
         )}

@@ -28,6 +28,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useMediaQuery } from "usehooks-ts";
 import { deleteList as delList } from "../actions/delete-list";
+import { MdDelete, MdOutlineCancel } from "react-icons/md";
 
 interface Props {
   shoppingList: ShoppingList;
@@ -78,9 +79,10 @@ export const ListItemActions = ({ shoppingList }: Props) => {
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogTrigger asChild>
           <CustomButton
-            buttonLabel={"Delete"}
+            buttonLabel="Delete"
+            icon={MdDelete}
+            iconPlacement="left"
             variant={"destructive"}
-            icon="delete"
           />
         </DialogTrigger>
         <DialogContent>
@@ -93,14 +95,16 @@ export const ListItemActions = ({ shoppingList }: Props) => {
               buttonLabel={"Delete"}
               variant={"destructive"}
               onClick={deleteList}
-              icon={"delete"}
+              icon={MdDelete}
+              iconPlacement="left"
               hideLabelOnMobile={false}
             />
             <DialogClose asChild>
               <CustomButton
                 buttonLabel={"Cancel"}
                 variant={"outline"}
-                icon={"cancel"}
+                icon={MdOutlineCancel}
+                iconPlacement="left"
                 hideLabelOnMobile={false}
               />
             </DialogClose>
@@ -114,9 +118,10 @@ export const ListItemActions = ({ shoppingList }: Props) => {
     <Drawer open={modalOpen} onOpenChange={setModalOpen}>
       <DrawerTrigger asChild>
         <CustomButton
-          buttonLabel={"Delete"}
+          buttonLabel="Delete"
+          icon={MdDelete}
+          iconPlacement="left"
           variant={"destructive"}
-          icon="delete"
         />
       </DrawerTrigger>
       <DrawerContent>
@@ -129,14 +134,16 @@ export const ListItemActions = ({ shoppingList }: Props) => {
             buttonLabel={"Delete"}
             variant={"destructive"}
             onClick={deleteList}
-            icon={"delete"}
+            icon={MdDelete}
+            iconPlacement="left"
             hideLabelOnMobile={false}
           />
           <DrawerClose asChild>
             <CustomButton
               buttonLabel={"Cancel"}
               variant={"outline"}
-              icon={"cancel"}
+              icon={MdOutlineCancel}
+              iconPlacement="left"
               hideLabelOnMobile={false}
             />
           </DrawerClose>

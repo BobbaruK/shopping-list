@@ -1,8 +1,9 @@
 "use client";
 
+import { revalidate } from "@/actions/reavalidate";
+import { CustomButton } from "@/components/custom-button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,17 +15,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { addListSchema } from "../../schemas";
 import { addList } from "../../actions/add-list";
-import { revalidate } from "@/actions/reavalidate";
-import { useRouter } from "next/navigation";
+import { addListSchema } from "../../schemas";
+import { toast } from "sonner";
 
 export const AddListForm = () => {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const form = useForm<z.infer<typeof addListSchema>>({
@@ -39,13 +38,13 @@ export const AddListForm = () => {
     startTransition(() => {
       addList(values).then((data) => {
         if (data?.success) {
-          setSuccess(data.success);
+          toast.success(data.success);
           revalidate();
           router.push(`/lists/${data.listId}`);
         }
 
         if (data?.error) {
-          setError(data.error);
+          toast.error(data.error);
           revalidate();
         }
       });
@@ -98,12 +97,11 @@ export const AddListForm = () => {
           )}
         />
 
-        <FormError message={error} />
-        <FormSuccess message={success} />
-
-        <Button type="submit" disabled={isPending}>
-          Add shopping list
-        </Button>
+        <CustomButton
+          buttonLabel="Add shopping list"
+          type="submit"
+          disabled={isPending}
+        />
       </form>
     </Form>
   );

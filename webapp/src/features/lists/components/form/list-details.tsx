@@ -1,6 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { revalidate } from "@/actions/reavalidate";
+import { CustomButton } from "@/components/custom-button";
 import {
   Form,
   FormControl,
@@ -13,14 +14,14 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { listDetailsSchema } from "../../schemas";
-import { editListDetails } from "../../actions/edit-list-details";
-import { toast } from "sonner";
-import { revalidate } from "@/actions/reavalidate";
-import { useRouter } from "next/navigation";
 import { ShoppingList } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
+import { editListDetails } from "../../actions/edit-list-details";
+import { listDetailsSchema } from "../../schemas";
 
 interface Props {
   list: ShoppingList;
@@ -28,6 +29,7 @@ interface Props {
 
 export const ListDetailsForm = ({ list }: Props) => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof listDetailsSchema>>({
     resolver: zodResolver(listDetailsSchema),
     defaultValues: {
@@ -38,17 +40,19 @@ export const ListDetailsForm = ({ list }: Props) => {
   });
 
   function onSubmit(values: z.infer<typeof listDetailsSchema>) {
-    editListDetails(list.id, values).then((data) => {
-      if (data.success) {
-        toast.success(data.success);
+    startTransition(() => {
+      editListDetails(list.id, values).then((data) => {
+        if (data.success) {
+          toast.success(data.success);
 
-        revalidate();
-        router.push(`/lists/${list.id}`);
-      }
+          revalidate();
+          router.push(`/lists/${list.id}`);
+        }
 
-      if (data.error) {
-        toast.error(data.error);
-      }
+        if (data.error) {
+          toast.error(data.error);
+        }
+      });
     });
   }
 
@@ -62,7 +66,12 @@ export const ListDetailsForm = ({ list }: Props) => {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="" type="text" {...field} />
+                <Input
+                  placeholder=""
+                  type="text"
+                  {...field}
+                  disabled={isPending}
+                />
               </FormControl>
 
               <FormMessage />
@@ -83,6 +92,7 @@ export const ListDetailsForm = ({ list }: Props) => {
                   checked={field.value}
                   onCheckedChange={field.onChange}
                   aria-readonly
+                  disabled={isPending}
                 />
               </FormControl>
             </FormItem>
@@ -100,6 +110,7 @@ export const ListDetailsForm = ({ list }: Props) => {
                   placeholder=""
                   className="resize-y"
                   {...field}
+                  disabled={isPending}
                   rows={4}
                 />
               </FormControl>
@@ -108,7 +119,11 @@ export const ListDetailsForm = ({ list }: Props) => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <CustomButton
+          buttonLabel="Edit shopping list"
+          type="submit"
+          disabled={isPending}
+        />
       </form>
     </Form>
   );

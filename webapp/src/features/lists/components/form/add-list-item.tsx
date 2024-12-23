@@ -1,6 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { revalidate } from "@/actions/reavalidate";
+import { CustomButton } from "@/components/custom-button";
 import { Card } from "@/components/ui/card";
 import {
   Form,
@@ -15,12 +16,12 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Prisma } from "@prisma/client";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import { addListItem } from "../../actions/add-list-item";
 import { addListItemSchema } from "../../schemas";
-import { revalidate } from "@/actions/reavalidate";
 
 interface Props {
   list: Prisma.ShoppingListGetPayload<{
@@ -32,6 +33,7 @@ interface Props {
 }
 
 export const AddListItemForm = ({ list, onAddListItem }: Props) => {
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof addListItemSchema>>({
     resolver: zodResolver(addListItemSchema),
     defaultValues: {
@@ -44,13 +46,15 @@ export const AddListItemForm = ({ list, onAddListItem }: Props) => {
   });
 
   function onSubmit(values: z.infer<typeof addListItemSchema>) {
-    addListItem(values, list.id).then((data) => {
-      if (data.success) {
-        toast.success(data.success);
-        revalidate();
-        onAddListItem();
-      }
-      if (data.error) toast.error(data.error);
+    startTransition(() => {
+      addListItem(values, list.id).then((data) => {
+        if (data.success) {
+          toast.success(data.success);
+          revalidate();
+          onAddListItem();
+        }
+        if (data.error) toast.error(data.error);
+      });
     });
   }
 
@@ -65,7 +69,12 @@ export const AddListItemForm = ({ list, onAddListItem }: Props) => {
               <FormItem>
                 <FormLabel>Item Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="" type="text" {...field} />
+                  <Input
+                    placeholder=""
+                    type="text"
+                    {...field}
+                    disabled={isPending}
+                  />
                 </FormControl>
 
                 <FormMessage />
@@ -83,6 +92,7 @@ export const AddListItemForm = ({ list, onAddListItem }: Props) => {
                   <Input
                     placeholder=""
                     type="number"
+                    disabled={isPending}
                     {...form.register(field.name, { valueAsNumber: true })}
                     onChange={(e) => {
                       const price = parseInt(`${form.getValues("price")}`);
@@ -113,6 +123,7 @@ export const AddListItemForm = ({ list, onAddListItem }: Props) => {
                   <Input
                     placeholder=""
                     type="number"
+                    disabled={isPending}
                     {...form.register(field.name, { valueAsNumber: true })}
                     onChange={(e) => {
                       const pieces = parseInt(`${form.getValues("pieces")}`);
@@ -166,6 +177,7 @@ export const AddListItemForm = ({ list, onAddListItem }: Props) => {
                     checked={field.value}
                     onCheckedChange={field.onChange}
                     aria-readonly
+                    disabled={isPending}
                   />
                 </FormControl>
               </FormItem>
@@ -182,6 +194,7 @@ export const AddListItemForm = ({ list, onAddListItem }: Props) => {
                   <Textarea
                     placeholder="Some notes here"
                     className="resize-y"
+                    disabled={isPending}
                     {...field}
                   />
                 </FormControl>
@@ -192,10 +205,18 @@ export const AddListItemForm = ({ list, onAddListItem }: Props) => {
           />
 
           <div className="flex items-center justify-start gap-4">
-            <Button type="submit">Submit</Button>
-            <Button type="button" variant={"outline"} onClick={onAddListItem}>
-              Cancel
-            </Button>
+            <CustomButton
+              buttonLabel="Add list item"
+              type="submit"
+              disabled={isPending}
+            />
+            <CustomButton
+              buttonLabel="Cancel"
+              variant={"outline"}
+              type="reset"
+              disabled={isPending}
+              onClick={onAddListItem}
+            />
           </div>
         </form>
       </Form>

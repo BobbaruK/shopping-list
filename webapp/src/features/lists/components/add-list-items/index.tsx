@@ -4,7 +4,9 @@ import { CustomButton } from "@/components/custom-button";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Prisma } from "@prisma/client";
 import { useState } from "react";
+import { MdDelete, MdModeEdit } from "react-icons/md";
 import { AddListItemForm } from "../form/add-list-item";
+import { IoAddCircleOutline } from "react-icons/io5";
 
 interface Props {
   list: Prisma.ShoppingListGetPayload<{
@@ -25,7 +27,24 @@ export const AddListItems = ({ list }: Props) => {
           {list.listItems.map((listItem) => (
             <Card key={listItem.id}>
               <CardHeader>
-                <CardTitle>{listItem.name}</CardTitle>
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <CardTitle>{listItem.name}</CardTitle>
+
+                  <div className="flex flex-wrap items-center gap-2">
+                    <CustomButton
+                      buttonLabel="Delete"
+                      icon={MdDelete}
+                      iconPlacement="left"
+                      variant={"destructive"}
+                    />
+                    <CustomButton
+                      buttonLabel="Edit"
+                      icon={MdModeEdit}
+                      iconPlacement="left"
+                      variant={"warning"}
+                    />
+                  </div>
+                </div>
                 {listItem.notes && (
                   <pre className="text-wrap text-sm text-muted-foreground">
                     {listItem.notes}
@@ -66,16 +85,15 @@ export const AddListItems = ({ list }: Props) => {
           onAddListItem={() => setAddNewItem(false)}
         />
       ) : (
-        <div className="grid place-items-center">
-          <CustomButton
-            buttonLabel="Add list item"
-            icon="add"
-            className="w-full"
-            variant={"outline"}
-            hideLabelOnMobile={false}
-            onClick={() => setAddNewItem(true)}
-          />
-        </div>
+        <CustomButton
+          buttonLabel="Add list item"
+          className="w-full"
+          variant={"outline"}
+          icon={IoAddCircleOutline}
+          iconPlacement="left"
+          hideLabelOnMobile={false}
+          onClick={() => setAddNewItem(true)}
+        />
       )}
     </>
   );
