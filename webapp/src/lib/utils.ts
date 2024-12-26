@@ -64,3 +64,51 @@ export function formatDate(
 
   return new Intl.DateTimeFormat("en-US", formatOptions).format(parsedDate);
 }
+
+/**
+ * Format a number as a currency string.
+ *
+ * This function uses the `Intl.NumberFormat` API to format a number as a currency string.
+ * It takes four parameters:
+ *
+ * - `value`: The number to format. If `undefined`, the function returns `'N/A'`.
+ * - `currency`: The currency to use (default `'USD'`).
+ * - `style`: The style of the currency format (default `'currency'`).
+ * - `fractionDigits`: An object with `minDecimals` and `maxDecimals` that specify the
+ *   minimum and maximum number of digits to display after the decimal point (default `{ minDecimals: 2, maxDecimals: 2 }`).
+ *
+ * If both `minDecimals` and `maxDecimals` are 0, the function replaces `,` with `.`.
+ *
+ * @example
+ * formatCurrency(1234.5) // => '$1,234.50'
+ * formatCurrency(1234.5, 'EUR') // => '1,234.50 '
+ * formatCurrency(1234.5, 'EUR', 'decimal') // => '1234.50'
+ * formatCurrency(1234.5, 'EUR', 'decimal', { minDecimals: 0, maxDecimals: 0 }) // => '1234'
+ */
+export const formatCurrency = (
+  value: number | undefined,
+  currency: string | undefined = "RON",
+  style: "decimal" | "currency" = "currency",
+  fractionDigits: {
+    minDecimals?: number | undefined;
+    maxDecimals?: number | undefined;
+  } = { minDecimals: 2, maxDecimals: 2 },
+) => {
+  if (value === undefined) {
+    return "N/A";
+  }
+
+  const formattedValue = new Intl.NumberFormat("ro-RO", {
+    style: style,
+    currency: currency,
+    minimumFractionDigits: fractionDigits.minDecimals,
+    maximumFractionDigits: fractionDigits.maxDecimals,
+  }).format(value);
+
+  // If both minDecimals and maxDecimals are 0, replace ',' with '.'
+  if (fractionDigits.minDecimals === 0 && fractionDigits.maxDecimals === 0) {
+    return formattedValue.replace(/,/g, ".");
+  }
+
+  return formattedValue;
+};

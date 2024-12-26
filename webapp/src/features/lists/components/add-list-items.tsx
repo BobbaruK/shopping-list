@@ -21,6 +21,7 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { useMediaQuery } from "usehooks-ts";
 import { AddListItemForm } from "./form/add-list-item";
 import { ListItemActions } from "./list-item-actions";
+import { formatCurrency } from "@/lib/utils";
 
 interface Props {
   list: Prisma.ShoppingListGetPayload<{
@@ -61,18 +62,8 @@ export const AddListItems = ({ list }: Props) => {
                     <span className="text-lg font-bold">{listItem.pieces}</span>{" "}
                     piece{listItem.pieces > 1 ? "s" : ""}
                   </p>{" "}
-                  <p>
-                    Price:{" "}
-                    <span className="text-lg font-bold">{listItem.price}</span>{" "}
-                    <small>RON</small>
-                  </p>
-                  <p>
-                    Total:{" "}
-                    <span className="text-lg font-bold">
-                      {listItem.priceTotal}
-                    </span>{" "}
-                    <small>RON</small>
-                  </p>
+                  <p>Price: {formatCurrency(listItem.price)}</p>
+                  <p>Total: {formatCurrency(listItem.priceTotal)}</p>
                 </div>
               </CardFooter>
             </Card>

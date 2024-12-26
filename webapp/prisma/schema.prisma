@@ -111,9 +111,9 @@ model ListItem {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   name           String
-  pieces         Int
-  price          Int
-  priceTotal     Int
+  pieces         Float
+  price          Float
+  priceTotal     Float
   notes          String?
   active         Boolean      @default(true)
   createdBy      User?        @relation("userListItemCreated", fields: [createdUserId], references: [id], onDelete: SetNull)

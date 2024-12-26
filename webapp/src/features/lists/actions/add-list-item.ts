@@ -26,15 +26,17 @@ export const addListItem = async (
 
   if (!dbUser) return { error: "Unauthorized!" };
 
-  const piecesNumber = parseInt(`${pieces}`);
-  const priceNumber = parseInt(`${price}`);
-  const totalValue = parseInt(`${total}`);
+  const piecesNumber = parseFloat(`${pieces}`);
+  const priceNumber = parseFloat(`${price}`);
+  const totalValue = parseFloat(`${total}`);
 
-  if (piecesNumber < 1 || priceNumber < 1) return { error: "Invalid fields!" };
+  if (piecesNumber < 0.001 || priceNumber < 0.001)
+    return { error: "Invalid fields!" };
 
   const totalNumber = piecesNumber * priceNumber;
 
-  if (totalValue !== totalNumber) return { error: "Data altered!" };
+  if (totalValue.toFixed(2) !== totalNumber.toFixed(2))
+    return { error: "Data altered!" };
 
   try {
     await db.listItem.create({
@@ -42,7 +44,7 @@ export const addListItem = async (
         name: itemName,
         pieces: piecesNumber,
         price: priceNumber,
-        priceTotal: totalNumber,
+        priceTotal: parseFloat(totalNumber.toFixed(2)),
         active,
         notes,
         createdUserId: dbUser.id,

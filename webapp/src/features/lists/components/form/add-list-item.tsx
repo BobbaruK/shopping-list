@@ -88,17 +88,18 @@ export const AddListItemForm = ({ list, onAddListItem }: Props) => {
                 <Input
                   placeholder=""
                   type="number"
+                  step={0.01}
                   disabled={isPending}
                   {...form.register(field.name, { valueAsNumber: true })}
                   onChange={(e) => {
-                    const price = parseInt(`${form.getValues("price")}`);
+                    const price = parseFloat(`${form.getValues("price")}`);
 
                     if (price > 0) {
-                      const pieces = parseInt(e.target.value);
+                      const pieces = parseFloat(e.target.value);
 
                       const total = price * pieces;
 
-                      form.setValue("total", total);
+                      form.setValue("total", total.toFixed(2));
                     }
                   }}
                 />
@@ -119,17 +120,18 @@ export const AddListItemForm = ({ list, onAddListItem }: Props) => {
                 <Input
                   placeholder=""
                   type="number"
+                  step={0.01}
                   disabled={isPending}
                   {...form.register(field.name, { valueAsNumber: true })}
                   onChange={(e) => {
-                    const pieces = parseInt(`${form.getValues("pieces")}`);
+                    const pieces = parseFloat(`${form.getValues("pieces")}`);
 
                     if (pieces > 0) {
-                      const price = parseInt(e.target.value);
+                      const price = parseFloat(e.target.value);
 
                       const total = pieces * price;
 
-                      form.setValue("total", total);
+                      form.setValue("total", total.toFixed(2));
                     }
                   }}
                 />
@@ -149,7 +151,7 @@ export const AddListItemForm = ({ list, onAddListItem }: Props) => {
               <FormControl>
                 <Input
                   placeholder=""
-                  type="number"
+                  type="string"
                   {...form.register(field.name, { valueAsNumber: true })}
                   disabled
                 />
