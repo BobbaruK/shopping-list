@@ -22,6 +22,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { AddListItemForm } from "./form/add-list-item";
 import { ListItemActions } from "./list-item-actions";
 import { formatCurrency } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 interface Props {
   list: Prisma.ShoppingListGetPayload<{
@@ -37,9 +38,9 @@ export const AddListItems = ({ list }: Props) => {
 
   return (
     <>
-      <h2>Items</h2>
       {list.listItems.length > 0 && (
         <>
+          <h2>Items</h2>
           {list.listItems.map((listItem) => (
             <Card key={listItem.id}>
               <CardHeader>
@@ -68,6 +69,26 @@ export const AddListItems = ({ list }: Props) => {
               </CardFooter>
             </Card>
           ))}
+
+          <Card>
+            <CardHeader>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <strong>Total:</strong>
+                <Badge
+                  variant={"info"}
+                  className="text-lg sm:text-xl lg:text-2xl"
+                >
+                  {formatCurrency(
+                    list.listItems.reduce(
+                      (accumulator, currentValue) =>
+                        accumulator + currentValue.priceTotal,
+                      0,
+                    ),
+                  )}
+                </Badge>
+              </div>
+            </CardHeader>
+          </Card>
         </>
       )}
 
