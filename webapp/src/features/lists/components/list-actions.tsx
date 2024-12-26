@@ -21,6 +21,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { MEDIA_QUERY_BREAKPOINT } from "@/constants";
 import { cn } from "@/lib/utils";
 import { ShoppingList } from "@prisma/client";
 import { useState } from "react";
@@ -35,7 +36,7 @@ interface Props {
 
 export const ListActions = ({ shoppingList }: Props) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useMediaQuery(MEDIA_QUERY_BREAKPOINT);
 
   const deleteList = () => {
     setModalOpen(false);

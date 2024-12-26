@@ -13,45 +13,46 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Prisma } from "@prisma/client";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
-import { addListItem } from "../../actions/add-list-item";
+import { editListItem } from "../../actions/edit-list-item";
 import { addListItemSchema } from "../../schemas";
+import { ListItem } from "@prisma/client";
 
 interface Props {
-  list: Prisma.ShoppingListGetPayload<{
-    include: {
-      listItems: true;
-    };
-  }>;
-  onAddListItem: () => void;
+  listItem: ListItem;
+  onEditListItem: () => void;
 }
 
-export const AddListItemForm = ({ list, onAddListItem }: Props) => {
+export const EditListItemForm = ({ listItem, onEditListItem }: Props) => {
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof addListItemSchema>>({
     resolver: zodResolver(addListItemSchema),
     defaultValues: {
-      itemName: "",
-      pieces: "",
-      price: "",
-      total: "",
-      active: true,
+      itemName: listItem.name,
+      pieces: listItem.pieces,
+      price: listItem.price,
+      total: listItem.priceTotal,
+      notes: listItem.notes || undefined,
+      active: listItem.active,
     },
   });
 
   function onSubmit(values: z.infer<typeof addListItemSchema>) {
     startTransition(() => {
-      addListItem(values, list.id).then((data) => {
-        if (data.success) {
-          toast.success(data.success);
-          onAddListItem();
-        }
-        if (data.error) toast.error(data.error);
-      });
+      editListItem(values, listItem.shoppingListId, listItem.id).then(
+        (data) => {
+          if (data.success) {
+            toast.success(
+              <div dangerouslySetInnerHTML={{ __html: data.success }} />,
+            );
+            onEditListItem();
+          }
+          if (data.error) toast.error(data.error);
+        },
+      );
     });
   }
 
@@ -202,7 +203,7 @@ export const AddListItemForm = ({ list, onAddListItem }: Props) => {
 
         <div className="flex items-center justify-end gap-4">
           <CustomButton
-            buttonLabel="Add list item"
+            buttonLabel={`Edit ${listItem.name}`}
             type="submit"
             disabled={isPending}
           />
@@ -211,7 +212,7 @@ export const AddListItemForm = ({ list, onAddListItem }: Props) => {
             variant={"outline"}
             type="reset"
             disabled={isPending}
-            onClick={onAddListItem}
+            onClick={onEditListItem}
           />
         </div>
       </form>

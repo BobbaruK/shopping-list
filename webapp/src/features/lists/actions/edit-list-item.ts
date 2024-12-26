@@ -2,14 +2,15 @@
 
 import { getUserById } from "@/features/auth/data";
 import { currentUser } from "@/features/auth/lib/auth";
-import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { addListItemSchema } from "../schemas";
+import db from "@/lib/db";
 
-export const addListItem = async (
+export const editListItem = async (
   values: z.infer<typeof addListItemSchema>,
   shoppingListId: string,
+  listItemId: string,
 ) => {
   const validatedFields = addListItemSchema.safeParse(values);
 
@@ -26,6 +27,17 @@ export const addListItem = async (
 
   if (!dbUser) return { error: "Unauthorized!" };
 
+  const existingListItem = await db.listItem.findFirst({
+    where: {
+      id: listItemId,
+    },
+  });
+
+  if (!existingListItem) return { error: "List item not found!" };
+
+  if (existingListItem.shoppingListId !== shoppingListId)
+    return { error: "List item not found in this shopping list" };
+
   const piecesNumber = parseInt(`${pieces}`);
   const priceNumber = parseInt(`${price}`);
   const totalValue = parseInt(`${total}`);
@@ -37,7 +49,10 @@ export const addListItem = async (
   if (totalValue !== totalNumber) return { error: "Data altered!" };
 
   try {
-    await db.listItem.create({
+    await db.listItem.update({
+      where: {
+        id: listItemId,
+      },
       data: {
         name: itemName,
         pieces: piecesNumber,
@@ -60,6 +75,6 @@ export const addListItem = async (
   revalidatePath("/");
 
   return {
-    success: "List item successfully created!",
+    success: `List item "<strong>${existingListItem.name}</strong>" successfully edited!`,
   };
 };

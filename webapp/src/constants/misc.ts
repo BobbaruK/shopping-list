@@ -27,3 +27,9 @@ export const MAX_USERNAME = 20;
  * @type {number}
  */
 export const TOAST_DURATION = 3500; // ms
+
+/**
+ * Media query breakpoint
+ * @type {string}
+ */
+export const MEDIA_QUERY_BREAKPOINT = "(min-width: 768px)"; // ms

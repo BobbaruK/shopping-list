@@ -4,6 +4,7 @@ export {
   MIN_PASSWORD,
   MIN_USERNAME,
   TOAST_DURATION,
+  MEDIA_QUERY_BREAKPOINT,
 } from "./misc";
 export {
   apiAuthPrefix,
