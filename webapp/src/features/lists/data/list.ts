@@ -7,7 +7,11 @@ export const getList = async (id: string) => {
         id,
       },
       include: {
-        listItems: true,
+        listItems: {
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
       },
     });
 

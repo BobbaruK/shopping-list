@@ -24,18 +24,22 @@ import {
 import { MEDIA_QUERY_BREAKPOINT } from "@/constants";
 import { cn } from "@/lib/utils";
 import { ListItem } from "@prisma/client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { MdDelete, MdModeEdit, MdOutlineCancel } from "react-icons/md";
 import { toast } from "sonner";
 import { useMediaQuery } from "usehooks-ts";
 import { deleteListItem } from "../actions/delete-list-item";
 import { EditListItemForm } from "./form/edit-list-item";
+import { FaRegCheckSquare } from "react-icons/fa";
+import { FaRegSquare } from "react-icons/fa6";
+import { setListItemActive } from "../actions/set-list-item-active";
 
 interface Props {
   listItem: ListItem;
 }
 
 export const ListItemActions = ({ listItem }: Props) => {
+  const [isPending, startTransition] = useTransition();
   const [deleteItemModalOpen, setDeleteItemModalOpen] = useState(false);
   const [editItemModalOpen, setEditItemModalOpen] = useState(false);
   const isDesktop = useMediaQuery(MEDIA_QUERY_BREAKPOINT);
@@ -43,18 +47,20 @@ export const ListItemActions = ({ listItem }: Props) => {
   const deleteItem = () => {
     setDeleteItemModalOpen(false);
 
-    deleteListItem(listItem.id).then((data) => {
-      if (data.success) {
-        const markup = { __html: data.success };
-        toast.warning(<div dangerouslySetInnerHTML={markup} />);
-        setDeleteItemModalOpen(false);
-      }
+    startTransition(() => {
+      deleteListItem(listItem.id).then((data) => {
+        if (data.success) {
+          const markup = { __html: data.success };
+          toast.warning(<div dangerouslySetInnerHTML={markup} />);
+          setDeleteItemModalOpen(false);
+        }
 
-      if (data.error) {
-        const markup = { __html: data.error };
-        toast.error(<div dangerouslySetInnerHTML={markup} />);
-        setDeleteItemModalOpen(false);
-      }
+        if (data.error) {
+          const markup = { __html: data.error };
+          toast.error(<div dangerouslySetInnerHTML={markup} />);
+          setDeleteItemModalOpen(false);
+        }
+      });
     });
   };
 
@@ -63,6 +69,19 @@ export const ListItemActions = ({ listItem }: Props) => {
     description: {
       __html: `This action cannot be undone. This will permanently delete &quot;<strong>${listItem.name}</strong>&quot; your list and from our servers.`,
     },
+  };
+
+  const setListItemCheck = () => {
+    startTransition(() => {
+      setListItemActive(listItem.id).then((data) => {
+        if (data.success) {
+          toast.success(
+            <div dangerouslySetInnerHTML={{ __html: data.success }} />,
+          );
+        }
+        if (data.error) toast.error(data.error);
+      });
+    });
   };
 
   if (isDesktop)
@@ -78,6 +97,7 @@ export const ListItemActions = ({ listItem }: Props) => {
               icon={MdDelete}
               iconPlacement="left"
               variant={"destructive"}
+              disabled={isPending}
             />
           </DialogTrigger>
           <DialogContent>
@@ -113,6 +133,7 @@ export const ListItemActions = ({ listItem }: Props) => {
               icon={MdModeEdit}
               iconPlacement="left"
               variant={"warning"}
+              disabled={isPending}
             />
           </DialogTrigger>
           <DialogContent>
@@ -127,6 +148,14 @@ export const ListItemActions = ({ listItem }: Props) => {
             />
           </DialogContent>
         </Dialog>
+        <CustomButton
+          buttonLabel="Check"
+          icon={listItem.active ? FaRegSquare : FaRegCheckSquare}
+          iconPlacement="left"
+          variant={"info"}
+          onClick={setListItemCheck}
+          disabled={isPending}
+        />
       </>
     );
 
@@ -140,6 +169,7 @@ export const ListItemActions = ({ listItem }: Props) => {
             icon={MdDelete}
             iconPlacement="left"
             variant={"destructive"}
+            disabled={isPending}
           />
         </DrawerTrigger>
         <DrawerContent>
@@ -175,6 +205,7 @@ export const ListItemActions = ({ listItem }: Props) => {
             icon={MdModeEdit}
             iconPlacement="left"
             variant={"warning"}
+            disabled={isPending}
           />
         </DrawerTrigger>
         <DrawerContent>
@@ -191,6 +222,14 @@ export const ListItemActions = ({ listItem }: Props) => {
           </div>
         </DrawerContent>
       </Drawer>
+      <CustomButton
+        buttonLabel="Check"
+        icon={listItem.active ? FaRegSquare : FaRegCheckSquare}
+        iconPlacement="left"
+        variant={"info"}
+        onClick={setListItemCheck}
+        disabled={isPending}
+      />
     </>
   );
 };

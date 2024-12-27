@@ -21,7 +21,7 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { useMediaQuery } from "usehooks-ts";
 import { AddListItemForm } from "./form/add-list-item";
 import { ListItemActions } from "./list-item-actions";
-import { formatCurrency } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
 interface Props {
@@ -42,9 +42,16 @@ export const AddListItems = ({ list }: Props) => {
         <>
           <h2>Items</h2>
           {list.listItems.map((listItem) => (
-            <Card key={listItem.id}>
+            <Card
+              key={listItem.id}
+              className={cn(listItem.active ? "" : "text-muted")}
+            >
               <CardHeader>
-                <div className="flex flex-wrap items-center justify-between gap-4">
+                <div
+                  className={
+                    "flex flex-wrap items-center justify-between gap-4"
+                  }
+                >
                   <CardTitle>{listItem.name}</CardTitle>
 
                   <div className="flex flex-wrap items-center gap-2">
@@ -52,7 +59,7 @@ export const AddListItems = ({ list }: Props) => {
                   </div>
                 </div>
                 {listItem.notes && (
-                  <pre className="text-wrap text-sm text-muted-foreground">
+                  <pre className={"text-wrap text-sm text-inherit"}>
                     {listItem.notes}
                   </pre>
                 )}
